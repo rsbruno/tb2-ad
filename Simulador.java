@@ -71,17 +71,13 @@ public class Simulador {
                 e_w_saida.setSomaAreas(
                         e_w_saida.getSomaAreas()
                                 + (tempo_decorrido - e_w_saida.getTempoAnterior()) * e_w_saida.getNoEventos());
-                e_w_saida.setNoEventos(e_w_saida.getNoEventos() - 1);
+                e_w_saida.setNoEventos(e_w_saida.getNoEventos() + 1);
                 e_w_saida.setTempoAnterior(tempo_decorrido);
             } else {
                 System.out.println("Evento invalido!");
                 return;
             }
         }
-
-        System.out.println("chegada: " + e_w_chegada.getSomaAreas());
-        System.out.println("tempoAnterior: " + e_w_saida.getTempoAnterior());
-        System.out.println("noEventos: " + e_w_saida.getNoEventos());
 
         e_w_chegada.setSomaAreas(
                 e_w_chegada.getSomaAreas()
@@ -95,9 +91,9 @@ public class Simulador {
 
         double lambda = e_w_chegada.getNoEventos() / tempo_decorrido;
 
-        System.out.println("ocupacao: " + soma_ocupacao / tempo_decorrido);
-        System.out.println("E[N]: " + e_n_calculo);
-        System.out.println("E[W]: " + e_w_calculo);
-        System.out.println("Litte: " + (e_n_calculo - lambda * e_w_calculo));
+        System.out.println("tamanho maximo da fila: " + max_fila);
+        System.out.printf("E[N]: %.6f\n", e_n_calculo);
+        System.out.printf("E[W]: %.6f\n", e_w_calculo);
+        System.out.printf("Erro de Little: %.20f\n", Math.abs(e_n_calculo - lambda * e_w_calculo));
     }
 }

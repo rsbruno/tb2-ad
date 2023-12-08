@@ -25,7 +25,6 @@ public class Simulador {
         double tempo_saida = Double.MAX_VALUE;
         long fila = 0;
         long max_fila = 0;
-        double soma_ocupacao = 0.0;
 
         Litte e_n = new Litte();
         Litte e_w_chegada = new Litte();
@@ -37,7 +36,6 @@ public class Simulador {
                 if (fila == 0) {
                     double tempo_servico = (-1.0 / params.getMediaServico()) * Math.log(uniforme());
                     tempo_saida = tempo_decorrido + tempo_servico;
-                    soma_ocupacao += tempo_servico;
                 }
                 fila++;
                 max_fila = fila > max_fila ? fila : max_fila;
@@ -60,7 +58,6 @@ public class Simulador {
                 if (fila != 0) {
                     double tempo_servico = (-1.0 / params.getMediaServico()) * Math.log(uniforme());
                     tempo_saida = tempo_decorrido + tempo_servico;
-                    soma_ocupacao += tempo_servico;
                 } else {
                     tempo_saida = Double.MAX_VALUE;
                 }

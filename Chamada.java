@@ -2,6 +2,8 @@ public class Chamada implements Comparable<Chamada> {
     private Double proximoPacote;
     private Double tempo_saida;
 
+    static Parametros parametros = new Parametros();
+
     public Chamada(Double tempo_chegada, Double tempo_saida) {
         this.proximoPacote = tempo_chegada;
         this.tempo_saida = tempo_saida;
@@ -16,7 +18,6 @@ public class Chamada implements Comparable<Chamada> {
     }
 
     public Boolean terminouAChamada() {
-        // System.out.println(this.tempo_saida + " : " + this.proximoPacote);
         if (proximoPacote > tempo_saida)
             return true;
         else
@@ -24,7 +25,7 @@ public class Chamada implements Comparable<Chamada> {
     }
 
     public Double geraProximoPacote() {
-        proximoPacote = proximoPacote + 0.02;
+        proximoPacote = proximoPacote + parametros.getTempoEntrePacotes();
         return this.proximoPacote;
     }
 

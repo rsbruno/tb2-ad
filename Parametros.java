@@ -4,14 +4,16 @@ public class Parametros {
     private double tempoSimulacao;
     private double duracaoLigacao;
     private double tempoEntrePacotes;
+    private double tempoAtendimento;
 
     // Construtor
     public Parametros() {
-        this.mediaChegada = 1.0 / 0.4;
+        this.mediaChegada = 1.0 / 0.01;
         this.mediaServico = 1.0 / 0.6;
-        this.tempoSimulacao = 1200;
-        this.duracaoLigacao = 1200;
+        this.tempoSimulacao = 1800;
+        this.duracaoLigacao = 120;
         this.tempoEntrePacotes = 0.02;
+        this.tempoAtendimento = 0.000012;
     }
 
     // Getters
@@ -33,5 +35,9 @@ public class Parametros {
 
     public double getTempoEntrePacotes() {
         return this.tempoEntrePacotes;
+    }
+
+    public double getTempoAtendimento() {
+        return this.tempoAtendimento;
     }
 }

@@ -19,7 +19,7 @@ public class Teste {
 
         random.setSeed(864000);
 
-        Parametros params = new Parametros(0.1, 0.06, 1200);
+        Parametros params = new Parametros();
         double tempo_decorrido = 0.0;
         double tempo_chegada = (-1.0 / params.getMediaChegada()) * Math.log(uniforme());
         double tempo_saida = Double.MAX_VALUE;
@@ -33,7 +33,6 @@ public class Teste {
         while (tempo_decorrido < params.getTempoSimulacao()) {
             tempo_decorrido = min(tempo_chegada, tempo_saida);
             if (tempo_decorrido == tempo_chegada) {
-                System.out.println("Evento de chegada");
                 if (fila == 0) {
                     double tempo_servico = (-1.0 / params.getMediaServico()) * Math.log(uniforme());
                     tempo_saida = tempo_decorrido + tempo_servico;
@@ -47,7 +46,7 @@ public class Teste {
                         e_n.getSomaAreas() + (tempo_decorrido - e_n.getTempoAnterior()) * e_n.getNoEventos());
                 e_n.setNoEventos(e_n.getNoEventos() + 1);
                 e_n.setTempoAnterior(tempo_decorrido);
-                // E[W] - Chegada
+                // E[W] - Chegadaj
                 e_w_chegada.setSomaAreas(
                         e_w_chegada.getSomaAreas()
                                 + (tempo_decorrido - e_w_chegada.getTempoAnterior()) * e_w_chegada.getNoEventos());
@@ -55,7 +54,6 @@ public class Teste {
                 e_w_chegada.setTempoAnterior(tempo_decorrido);
             } else if (tempo_decorrido == tempo_saida) {
                 // saida
-                System.out.println("Evento de saida");
                 fila--;
                 if (fila != 0) {
                     double tempo_servico = (-1.0 / params.getMediaServico()) * Math.log(uniforme());

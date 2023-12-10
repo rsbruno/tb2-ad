@@ -3,19 +3,12 @@ public class Litte {
     private double tempoAnterior;
     private double somaAreas;
 
-    // Construtor
     public Litte() {
-        iniciaLitte();
+        this.tempoAnterior = 0.0;
+        this.somaAreas = 0.0;
+        this.noEventos = 0;
     }
 
-    // Método para inicializar os atributos
-    public void iniciaLitte() {
-        setNoEventos(0);
-        setTempoAnterior(0.0);
-        setSomaAreas(0.0);
-    }
-
-    // Getters e Setters
     public long getNoEventos() {
         return noEventos;
     }
@@ -38,6 +31,11 @@ public class Litte {
 
     public void setSomaAreas(double somaAreas) {
         this.somaAreas = somaAreas;
+    }
+
+    public double atualizaSomaAreas(double incremento) {
+        this.somaAreas = this.somaAreas + incremento;
+        return this.somaAreas;
     }
 
 }

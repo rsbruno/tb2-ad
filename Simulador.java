@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class Simulador {
     }
 
     public static void main(String[] args) {
-
+        Locale.setDefault(Locale.US);
         random.setSeed(864000);
 
         PriorityQueue<Chamada> chamadas = new PriorityQueue<>();
@@ -135,13 +136,13 @@ public class Simulador {
                 double lambda = e_w_chegada.getNoEventos() / tempo_decorrido;
                 try {
                     // Cria um objeto FileWriter com o caminho do arquivo
-                    FileWriter fileWriter = new FileWriter("saida.txt", true);
+                    FileWriter fileWriter = new FileWriter("saida.csv", true);
                     // Cria um objeto BufferedWriter para escrever de forma mais eficiente
                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                     // Cria um objeto PrintWriter para escrever no arquivo
                     PrintWriter printWriter = new PrintWriter(bufferedWriter);
                     // Escreve no arquivo
-                    printWriter.printf("%.6f %.20f\n", tempo_coleta, Math.abs(e_n_calculo - lambda * e_w_calculo));
+                    printWriter.printf("%.6f,%.20f\n", tempo_coleta, Math.abs(e_n_calculo - lambda * e_w_calculo));
                     // Fecha os recursos
                     printWriter.close();
                     bufferedWriter.close();

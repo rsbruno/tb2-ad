@@ -8,12 +8,12 @@ public class Parametros {
 
     // Construtor
     public Parametros() {
-        this.tempoSimulacao = 1800;
+        this.tempoSimulacao = 900;
         this.duracaoLigacao = 1.0 / 120;
 
-        this.mediaChegada = 1.0 / 0.01504;
-        this.tempoEntrePacotes = 0.20;
-        this.tempoDeServico = 0.01504;
+        this.mediaChegada = 1.0 / 0.0100027;
+        this.tempoEntrePacotes = 0.020;
+        this.tempoDeServico = (188 * 8) / 1000000000.0;
     }
 
     // Getters

@@ -111,19 +111,19 @@ public class Simulador {
                 e_w_saida.setTempoAnterior(tempo_decorrido);
                 // System.out.println("pegando eventos de saida" + tempo_saida_pacote);
             } else if (tempo_decorrido == tempo_coleta) {
-                e_n.atualizaSomaAreas((tempo_decorrido - e_n.getTempoAnterior()) *
-                        e_n.getNoEventos());
-                e_n.setTempoAnterior(tempo_decorrido);
+                // e_n.atualizaSomaAreas((tempo_decorrido - e_n.getTempoAnterior()) *
+                //         e_n.getNoEventos());
+                // e_n.setTempoAnterior(tempo_decorrido);
 
-                e_w_chegada
-                        .atualizaSomaAreas((tempo_decorrido - e_w_saida.getTempoAnterior()) *
-                                e_w_saida.getNoEventos());
-                e_w_chegada.setTempoAnterior(tempo_decorrido);
+                // e_w_chegada
+                //         .atualizaSomaAreas((tempo_decorrido - e_w_saida.getTempoAnterior()) *
+                //                 e_w_saida.getNoEventos());
+                // e_w_chegada.setTempoAnterior(tempo_decorrido);
 
-                e_w_saida
-                        .atualizaSomaAreas((tempo_decorrido - e_w_saida.getTempoAnterior()) *
-                                e_w_saida.getNoEventos());
-                e_w_saida.setTempoAnterior(tempo_decorrido);
+                // e_w_saida
+                //         .atualizaSomaAreas((tempo_decorrido - e_w_saida.getTempoAnterior()) *
+                //                 e_w_saida.getNoEventos());
+                // e_w_saida.setTempoAnterior(tempo_decorrido);
 
                 tempo_coleta += 10;
             } else {

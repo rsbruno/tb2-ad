@@ -7,7 +7,7 @@ public class Parametros {
 
     // Construtor
     public Parametros() {
-        this.tempoSimulacao = 600;
+        this.tempoSimulacao = 86400;
         this.duracaoLigacao = 1.0 / 120;
 
         this.mediaChegada = 1.0 / 0.01504;

@@ -29,6 +29,7 @@ public class Simulador {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
         random.setSeed(864000);
+        System.out.println("tempo de simulação total: " + parametros.getTempoSimulacao());
 
         PriorityQueue<Chamada> chamadas = new PriorityQueue<>();
 

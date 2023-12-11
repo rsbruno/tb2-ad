@@ -1,0 +1,11 @@
+60% ==================================
+empo de simulaÃ§Ã£o total: 86400.0
+tamanho final da arvore: 7917
+chamadas Simultaneas: 8341
+chegadas processadas: 34429029356
+saidas processadas: 34429029355
+tamanho maximo da fila: 18
+Ocupacao: 0.599320
+E[N]: 1.047707
+E[W]: 0.000003
+Erro de Little: 0.14009686834949453000

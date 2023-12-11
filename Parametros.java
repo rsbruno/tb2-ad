@@ -1,6 +1,5 @@
 public class Parametros {
     private double mediaChegada;
-    private double mediaServico;
     private double tempoSimulacao;
     private double duracaoLigacao;
     private double tempoEntrePacotes;

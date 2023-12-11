@@ -25,6 +25,8 @@ public class Simulador {
 
         random.setSeed(864000);
 
+        // System.out.println(1504/1000000000);
+
         PriorityQueue<Chamada> chamadas = new PriorityQueue<>();
 
         long fila = 0;
@@ -40,6 +42,8 @@ public class Simulador {
         double tempo_chegada_pacote = Double.MAX_VALUE;
         double tempo_saida_pacote = Double.MAX_VALUE;
         double tempo_chegada_nova_chamada = geraTempoAleatorio(parametros.getMediaChegada());
+        double tempo_coleta = 10.0;
+        long maiorNoPacotes = 0;
 
         long chegadas = 0;
         long saidas = 0;
@@ -49,35 +53,38 @@ public class Simulador {
 
             tempo_chegada_pacote = !Objects.isNull(chamadaAtual) ? chamadaAtual.getProximoPacote() : Double.MAX_VALUE;
 
-            tempo_decorrido = min(tempo_chegada_nova_chamada, min(tempo_chegada_pacote, tempo_saida_pacote));
+            tempo_decorrido = min(tempo_chegada_nova_chamada,
+                    min(tempo_coleta, min(tempo_chegada_pacote, tempo_saida_pacote)));
+
+            if (!Objects.isNull(chamadaAtual)) {
+                maiorNoPacotes = chamadaAtual.getPacotesGerados() > maiorNoPacotes ? chamadaAtual.getPacotesGerados()
+                        : maiorNoPacotes;
+            }
 
             if (tempo_decorrido == tempo_chegada_nova_chamada) {
                 double duracao_da_chamada = tempo_decorrido + geraTempoAleatorio(parametros.getDuracaoLigacao());
                 Chamada chamada = new Chamada(tempo_decorrido, duracao_da_chamada);
                 chamadas.add(chamada);
+                chamadasSimultaneas = chamadas.size() > chamadasSimultaneas ? chamadas.size() : chamadasSimultaneas;
                 tempo_chegada_nova_chamada = tempo_decorrido + geraTempoAleatorio(parametros.getMediaChegada());
             } else if (tempo_decorrido == tempo_chegada_pacote) {
                 chegadas++;
-
-                if (fila == 0) {
-                    tempo_saida_pacote = tempo_decorrido + parametros.getTempoAtendimento();
-                }
-                fila++;
-
                 Chamada chamada = chamadas.poll();
                 chamada.geraProximoPacote();
-                // System.out.println(atualizaPacoteChamada.terminouAChamada());
                 if (!chamada.terminouAChamada()) {
                     chamadas.add(chamada);
                 }
-
-                soma_ocupacao += parametros.getTempoAtendimento();
-
+                if (fila == 0) {
+                    tempo_saida_pacote = tempo_decorrido + parametros.getTempoDeServico();
+                    soma_ocupacao += parametros.getTempoDeServico();
+                }
+                fila++;
                 max_fila = fila > max_fila ? fila : max_fila;
+
                 e_n.atualizaSomaAreas((tempo_decorrido - e_n.getTempoAnterior()) * e_n.getNoEventos());
                 e_n.setNoEventos(e_n.getNoEventos() + 1);
                 e_n.setTempoAnterior(tempo_decorrido);
-                // E[W] - Chegada
+
                 e_w_chegada.atualizaSomaAreas(
                         (tempo_decorrido - e_w_chegada.getTempoAnterior()) * e_w_chegada.getNoEventos());
                 e_w_chegada.setNoEventos(e_w_chegada.getNoEventos() + 1);
@@ -86,8 +93,8 @@ public class Simulador {
                 fila--;
                 saidas++;
                 if (fila > 0l) {
-                    tempo_saida_pacote = tempo_decorrido + parametros.getTempoAtendimento();
-                    soma_ocupacao += parametros.getTempoAtendimento();
+                    tempo_saida_pacote = tempo_decorrido + parametros.getTempoDeServico();
+                    soma_ocupacao += parametros.getTempoDeServico();
                 } else {
                     tempo_saida_pacote = Double.MAX_VALUE;
                 }
@@ -100,17 +107,32 @@ public class Simulador {
                 e_w_saida.setNoEventos(e_w_saida.getNoEventos() + 1);
                 e_w_saida.setTempoAnterior(tempo_decorrido);
                 // System.out.println("pegando eventos de saida" + tempo_saida_pacote);
+            } else if (tempo_decorrido == tempo_coleta) {
+                e_n.atualizaSomaAreas((tempo_decorrido - e_n.getTempoAnterior()) * e_n.getNoEventos());
+                e_n.setTempoAnterior(tempo_decorrido);
+
+                e_w_chegada.atualizaSomaAreas(
+                        (tempo_decorrido - e_w_chegada.getTempoAnterior()) * e_w_chegada.getNoEventos());
+                e_w_chegada.setTempoAnterior(tempo_decorrido);
+
+                e_w_saida.atualizaSomaAreas(
+                        (tempo_decorrido - e_w_saida.getTempoAnterior()) * e_w_saida.getNoEventos());
+                e_w_saida.setTempoAnterior(tempo_decorrido);
+
+                tempo_coleta += 20;
             } else {
                 System.out.println("nenhum evento");
                 tempo_decorrido = parametros.getTempoSimulacao();
             }
-            chamadasSimultaneas = chamadas.size() > chamadasSimultaneas ? chamadas.size() : chamadasSimultaneas;
+
         }
 
+        System.out.println("soma_ocupacao: " + soma_ocupacao);
         System.out.println("tamanho da arvore: " + chamadas.size());
         System.out.println("chamadasSimultaneas: " + chamadasSimultaneas);
         System.out.println("chegadas: " + chegadas);
         System.out.println("saidas: " + saidas);
+        System.out.println("e_n.getSomaAreas(): " + e_n.getSomaAreas());
 
         e_w_chegada.atualizaSomaAreas((tempo_decorrido - e_w_chegada.getTempoAnterior()) * e_w_chegada.getNoEventos());
 

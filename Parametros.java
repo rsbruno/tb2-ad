@@ -4,25 +4,21 @@ public class Parametros {
     private double tempoSimulacao;
     private double duracaoLigacao;
     private double tempoEntrePacotes;
-    private double tempoAtendimento;
+    private double tempoDeServico;
 
     // Construtor
     public Parametros() {
-        this.mediaChegada = 1.0 / 0.01;
-        this.mediaServico = 1.0 / 0.6;
-        this.tempoSimulacao = 1800;
-        this.duracaoLigacao = 120;
+        this.tempoSimulacao = 7200;
+        this.duracaoLigacao = 1.0 / 120;
+
+        this.mediaChegada = (1.0 / (0.6 / 0.0000752 / 60));
         this.tempoEntrePacotes = 0.02;
-        this.tempoAtendimento = 0.000012;
+        this.tempoDeServico = (188 * 8 / 1000000000.00);
     }
 
     // Getters
     public double getMediaChegada() {
         return mediaChegada;
-    }
-
-    public double getMediaServico() {
-        return mediaServico;
     }
 
     public double getTempoSimulacao() {
@@ -37,7 +33,7 @@ public class Parametros {
         return this.tempoEntrePacotes;
     }
 
-    public double getTempoAtendimento() {
-        return this.tempoAtendimento;
+    public double getTempoDeServico() {
+        return this.tempoDeServico;
     }
 }

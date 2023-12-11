@@ -1,6 +1,10 @@
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Simulador {
 
@@ -47,6 +51,7 @@ public class Simulador {
         long saidas = 0;
 
         while (tempo_decorrido < parametros.getTempoSimulacao()) {
+
             Chamada chamadaAtual = !chamadas.isEmpty() ? chamadas.peek() : null;
 
             tempo_chegada_pacote = !Objects.isNull(chamadaAtual) ? chamadaAtual.getProximoPacote() : Double.MAX_VALUE;
@@ -111,19 +116,39 @@ public class Simulador {
                 e_w_saida.setTempoAnterior(tempo_decorrido);
                 // System.out.println("pegando eventos de saida" + tempo_saida_pacote);
             } else if (tempo_decorrido == tempo_coleta) {
-                // e_n.atualizaSomaAreas((tempo_decorrido - e_n.getTempoAnterior()) *
-                //         e_n.getNoEventos());
-                // e_n.setTempoAnterior(tempo_decorrido);
+                e_n.atualizaSomaAreas((tempo_decorrido - e_n.getTempoAnterior()) * e_n.getNoEventos());
+                e_n.setTempoAnterior(tempo_decorrido);
 
-                // e_w_chegada
-                //         .atualizaSomaAreas((tempo_decorrido - e_w_saida.getTempoAnterior()) *
-                //                 e_w_saida.getNoEventos());
-                // e_w_chegada.setTempoAnterior(tempo_decorrido);
+                e_w_chegada.atualizaSomaAreas(
+                        (tempo_decorrido - e_w_chegada.getTempoAnterior()) * e_w_chegada.getNoEventos());
+                e_w_chegada.setTempoAnterior(tempo_decorrido);
 
-                // e_w_saida
-                //         .atualizaSomaAreas((tempo_decorrido - e_w_saida.getTempoAnterior()) *
-                //                 e_w_saida.getNoEventos());
-                // e_w_saida.setTempoAnterior(tempo_decorrido);
+                e_w_saida.atualizaSomaAreas(
+                        (tempo_decorrido - e_w_saida.getTempoAnterior()) * e_w_saida.getNoEventos());
+                e_w_saida.setTempoAnterior(tempo_decorrido);
+
+                double e_w_calculo = (e_w_chegada.getSomaAreas() - e_w_saida.getSomaAreas())
+                        / e_w_chegada.getNoEventos();
+
+                double e_n_calculo = e_n.getSomaAreas() / tempo_decorrido;
+
+                double lambda = e_w_chegada.getNoEventos() / tempo_decorrido;
+                try {
+                    // Cria um objeto FileWriter com o caminho do arquivo
+                    FileWriter fileWriter = new FileWriter("saida.txt", true);
+                    // Cria um objeto BufferedWriter para escrever de forma mais eficiente
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    // Cria um objeto PrintWriter para escrever no arquivo
+                    PrintWriter printWriter = new PrintWriter(bufferedWriter);
+                    // Escreve no arquivo
+                    printWriter.printf("%.6f %.20f\n", tempo_coleta, Math.abs(e_n_calculo - lambda * e_w_calculo));
+                    // Fecha os recursos
+                    printWriter.close();
+                    bufferedWriter.close();
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 tempo_coleta += 10;
             } else {
@@ -132,11 +157,6 @@ public class Simulador {
             }
 
         }
-
-        System.out.println("tamanho da arvore: " + chamadas.size());
-        System.out.println("chamadasSimultaneas: " + chamadasSimultaneas);
-        System.out.println("chegadas: " + chegadas);
-        System.out.println("saidas: " + saidas);
 
         e_w_chegada.atualizaSomaAreas((tempo_decorrido - e_w_chegada.getTempoAnterior()) * e_w_chegada.getNoEventos());
 
@@ -148,7 +168,11 @@ public class Simulador {
 
         double lambda = e_w_chegada.getNoEventos() / tempo_decorrido;
 
-        System.out.println("tamanho maximo da fila: " + max_fila);
+        System.out.printf("tamanho final da arvore: %d\n", chamadas.size());
+        System.out.printf("chamadas Simultaneas: %d\n", chamadasSimultaneas);
+        System.out.printf("chegadas processadas: %d\n", chegadas);
+        System.out.printf("saidas processadas: %d\n", saidas);
+        System.out.printf("tamanho maximo da fila: %d\n", max_fila);
         System.out.printf("Ocupacao: %.6f\n", soma_ocupacao / tempo_decorrido);
         System.out.printf("E[N]: %.6f\n", e_n_calculo);
         System.out.printf("E[W]: %.6f\n", e_w_calculo);
